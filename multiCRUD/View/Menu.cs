@@ -9,16 +9,30 @@ namespace multiCRUD.View
 {
     public class Menu : IMenu
     {
+        public void AskWhatToDo()
+        {
+            Console.WriteLine("Wybierz typ");
+            Console.WriteLine("1\tDodaj");
+            Console.WriteLine("2\tZnajdź");
+        }
+
+        public void ChooseElementType()
+        {
+            Console.WriteLine("Wybierz typ");
+            Console.WriteLine("1\tKsiążka");
+            Console.WriteLine("2\tUżytkownik");
+        }
+
         public void ShowMainMenu()
         {
-            Console.WriteLine("Wyświetlam menu");
-            //TODO Menu
+            Console.WriteLine("Wybierz CRUD");
+            Console.WriteLine("1\tMongoDB");
+            Console.WriteLine("2\tSQLite");
         }
 
         public void ShowWrongValueError()
         {
-            Console.WriteLine("Wyświetlam błąd");
-            //TODO Error
+            Console.WriteLine("Nieprawidłowa wartość");
         }
     }
 }

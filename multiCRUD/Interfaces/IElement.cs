@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace multiCRUD.Interfaces
 {
-    public class IElement
+    public interface IElement
     {
     }
 }

@@ -9,7 +9,6 @@ namespace multiCRUD.Model
 {
     public class ResponseProvider : IResponseProvider
     {
-        private readonly IMenu _menu;
         public int GetIntFromUser()
         {
             try
