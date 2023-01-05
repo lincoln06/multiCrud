@@ -5,13 +5,11 @@ namespace multiCrud
 {
     public interface ICrud
     {
-        delegate void AddDelegate(IElement element);
-        delegate IElement FindDelegate(string arg1, string arg2);
-        FindDelegate Find { get; set; }
-        AddDelegate Add { get; set; }
-        void AddABook(IElement book);
-        void AddUser(IElement user);
+        void Add(IElement element);
+        void AddABook(Book book);
+        void AddUser(User user);
         IElement FindUser(string email, string password);
         IElement FindBook(string authorLastName, string title);
+        IElement Find(IElement element, SearchArguments searchArguments);
     }
 }

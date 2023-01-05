@@ -1,24 +1,29 @@
-﻿using multiCRUD.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using multiCRUD.Interfaces;
 
 namespace multiCRUD.Model.Elements
 {
+    [BsonIgnoreExtraElements]
     public class User:IElement
     {
-        public string _firstName { get; }
-        public string _lastName { get; }
-        public string _email { get; }
-        public string _password { get; }
+        [BsonElement]
+        public string _firstName { get; set; }
+        [BsonElement]
+        public string _lastName { get; set; }
+        [BsonElement]
+        public string _email { get; set; }
+        [BsonElement]
+        public string _password { get; set; }
         public User(string firstName, string lastName, string email, string password)
         {
             _firstName = firstName;
             _lastName = lastName;
             _email = email;
             _password = password;
+        }
+        public User()
+        {
+
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using multiCrud;
+﻿using multiCrud;
 using multiCRUD.Interfaces;
 using multiCRUD.Model.Crud;
 using multiCRUD.Model.Elements;
@@ -13,58 +8,65 @@ namespace multiCRUD.Model
     public class App : IApp
     {
         private readonly IMenu _menu;
-        private readonly ICrud _mongoCrud;
-        private readonly ICrud _sqliteCrud;
         private readonly IResponseProvider _responseProvider;
         private ICrud _crud;
         private IElement _element;
-        public App(IMenu menu, ICrud mongoCrud, ICrud sqliteCrud, IResponseProvider responseProvider)
+        private SearchArguments _searchArguments;
+        private readonly IViewer _viewer;
+        private int response;
+        public App(IMenu menu, IResponseProvider responseProvider, IViewer viewer)
         {
             _menu = menu;
-            _mongoCrud = mongoCrud;
-            _sqliteCrud = sqliteCrud;
             _responseProvider = responseProvider;
+            _viewer = viewer;
         }
 
         public void Start()
         {
             _menu.ShowMainMenu();
-            int choose=_responseProvider.GetIntFromUser();
-            _crud = _crud as MongoCrud;
-            switch(choose)
+            response = _responseProvider.GetIntFromUser();
+            switch (response)
             {
                 case 1:
-                    _crud = _mongoCrud;
+                    _crud = new MongoCrud();
+                    Console.WriteLine("Mongo");
                     break;
                 case 2:
-                    _crud = _sqliteCrud;
+                    _crud = new SqliteCrud();
                     break;
                 default:
                     _menu.ShowWrongValueError();
-                    Start();
                     break;
             }
             _menu.ChooseElementType();
-            choose = _responseProvider.GetIntFromUser();
-            switch(choose)
+            response = _responseProvider.GetIntFromUser();
+            switch (response)
             {
                 case 1:
-                    _crud.Add = _crud.AddABook;
-                    _crud.Find = _crud.FindBook;
+                    _element = new Book();
                     break;
                 case 2:
-                    _crud.Add = _crud.AddUser;
-                    _crud.Find = _crud.FindUser;
+                    _element = new User();
                     break;
                 default:
                     _menu.ShowWrongValueError();
-                    Start();
                     break;
             }
             _menu.AskWhatToDo();
-            choose=_responseProvider.GetIntFromUser();
-            //TODO zaprogramować pobieranie wartości od użytkownika
-
+            response = _responseProvider.GetIntFromUser();
+            switch (response)
+            {
+                case 1:
+                    _element = _responseProvider.GetElementFromUser(_element);
+                    _crud.Add(_element);
+                    break;
+                case 2:
+                    _searchArguments = _responseProvider.GetSearchArgumentsFromUser(_element);
+                    _element = _crud.Find(_element, _searchArguments);
+                    if (!_viewer.ShowElement(_element)) _menu.ShowNotFoundError(); ;
+                    break;
+            }
         }
     }
 }
+  
