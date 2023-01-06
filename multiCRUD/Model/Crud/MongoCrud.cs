@@ -36,22 +36,17 @@ namespace multiCRUD.Model.Crud
             _usersCollection.InsertOne(user);
         }
 
-        public IElement Find(IElement element, SearchArguments searchArguments)
+        public IElement? Find(IElement element, SearchArguments searchArguments)
         {
             if (element is Book)
             {
-                Book book = FindBook(searchArguments);
-                return book;
+                element = FindBook(searchArguments);
             }
-            else
+            if (element is User)
             {
-                if (element is User)
-                {
-                    User user = FindUser(searchArguments);
-                    return user;
-                }
-                else return null;
+                element = FindUser(searchArguments);
             }
+            return element;
             
         }
 
