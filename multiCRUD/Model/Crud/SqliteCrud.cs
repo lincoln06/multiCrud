@@ -22,29 +22,27 @@ namespace multiCRUD.Model.Crud
 
         public void AddABook(Book book)
         {
-            Console.WriteLine("Dodaję książkę do SQlite");
+            throw new NotImplementedException();
         }
 
         public void AddUser(User user)
         {
-            Console.WriteLine("Dodaję usera do SQlite");
+            throw new NotImplementedException();
         }
 
-        public IElement Find(IElement element, SearchArguments searchArguments)
+        public IElement? Find(IElement element, SearchArguments searchArguments)
         {
             throw new NotImplementedException();
         }
 
-        public IElement FindBook(string authorLastName, string title)
+        public Book? FindBook(SearchArguments searchArguments)
         {
-            Console.WriteLine("Znalazłem książkę");
-            return null;
+            throw new NotImplementedException();
         }
 
-        public IElement FindUser(string email, string password)
+        public User? FindUser(SearchArguments searchArguments)
         {
-            Console.WriteLine("Znalazłem usera");
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

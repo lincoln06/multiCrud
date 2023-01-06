@@ -8,8 +8,8 @@ namespace multiCrud
         void Add(IElement element);
         void AddABook(Book book);
         void AddUser(User user);
-        IElement FindUser(string email, string password);
-        IElement FindBook(string authorLastName, string title);
-        IElement Find(IElement element, SearchArguments searchArguments);
+        User? FindUser(SearchArguments searchArguments);
+        Book? FindBook(SearchArguments searchArguments);
+        IElement? Find(IElement element, SearchArguments searchArguments);
     }
 }

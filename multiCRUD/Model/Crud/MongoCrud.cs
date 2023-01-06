@@ -38,19 +38,55 @@ namespace multiCRUD.Model.Crud
 
         public IElement Find(IElement element, SearchArguments searchArguments)
         {
-            throw new NotImplementedException();
+            if (element is Book)
+            {
+                Book book = FindBook(searchArguments);
+                return book;
+            }
+            else
+            {
+                if (element is User)
+                {
+                    User user = FindUser(searchArguments);
+                    return user;
+                }
+                else return null;
+            }
+            
         }
 
-        public IElement FindBook(string authorLastName, string title)
+        public Book? FindBook(SearchArguments searchArguments)
         {
-            Console.WriteLine("Znalazłem książkę");
-            return null;
+            var filter = Builders<Book>.Filter.And(
+                Builders<Book>.Filter.Eq("AuthorLastName", searchArguments._arg1),
+                Builders<Book>.Filter.Eq("Title", searchArguments._arg2));
+            try
+            {
+                var record = (Book)_booksCollection.Find(filter).First();
+
+                return record;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
-        public IElement FindUser(string email, string password)
+        public User? FindUser(SearchArguments searchArguments)
         {
-            Console.WriteLine("Znalazłem usera");
-            return null;
+            var filter = Builders<User>.Filter.And(
+                Builders<User>.Filter.Eq("Email", searchArguments._arg1),
+                Builders<User>.Filter.Eq("Password", searchArguments._arg2));
+            try
+            {
+                var record = (User)_usersCollection.Find(filter).First();
+
+                return record;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
