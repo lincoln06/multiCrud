@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using multiCrud;
 using multiCRUD.Interfaces;
 using multiCRUD.Model;
-using multiCRUD.Model.Crud;
-using multiCRUD.Model.Elements;
 using multiCRUD.View;
 
 var host =Host.CreateDefaultBuilder().ConfigureServices(Configure).Build();

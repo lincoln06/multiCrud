@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using multiCRUD.Interfaces;
 using multiCRUD.Model.Elements;
 
@@ -28,7 +23,7 @@ namespace multiCRUD.View
         }
         public void ShowBook(Book book)
         {
-            Console.WriteLine($"Autor:\t{book._authorFirstName} {book._authorFirstName}");
+            Console.WriteLine($"Autor:\t{book._authorFirstName} {book._authorLastName}");
             Console.WriteLine($"Tytuł:\t{book._title}");
             Console.WriteLine($"Gatunek:\t{book._genre}");
             Console.WriteLine($"Rok wydania:\t{book._year}");

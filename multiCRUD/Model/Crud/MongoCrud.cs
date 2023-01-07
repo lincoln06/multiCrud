@@ -50,7 +50,7 @@ namespace multiCRUD.Model.Crud
             var filter = Builders<User>.Filter.Eq("Email", user._email);
             try
             {
-                var record = (User)_usersCollection.Find(filter).First();
+                var record = _usersCollection.Find(filter).First();
                 return true;
             }
             catch
@@ -67,7 +67,7 @@ namespace multiCRUD.Model.Crud
                 Builders<Book>.Filter.Eq("Title", book._title));
             try
             {
-                var record = (Book)_booksCollection.Find(filter).First();
+                var record = _booksCollection.Find(filter).First();
 
                 return true; ;
             }
@@ -98,7 +98,7 @@ namespace multiCRUD.Model.Crud
                 Builders<Book>.Filter.Eq("Title", searchArguments._arg2));
             try
             {
-                var record = (Book)_booksCollection.Find(filter).First();
+                var record = _booksCollection.Find(filter).First();
 
                 return record;
             }
@@ -115,7 +115,8 @@ namespace multiCRUD.Model.Crud
                 Builders<User>.Filter.Eq("Password", PasswordEncryptor.Encrypt(searchArguments._arg2, searchArguments._arg1)));
             try
             {
-                var record = (User)_usersCollection.Find(filter).First();
+                var record = _usersCollection.Find(filter).First();
+                Console.WriteLine(record._lastName);
 
                 return record;
             }

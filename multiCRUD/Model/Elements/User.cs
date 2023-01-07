@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Attributes;
 using multiCRUD.Interfaces;
 using multiCRUD.Validation;
