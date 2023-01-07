@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation.Results;
 using multiCRUD.Interfaces;
 using multiCRUD.Model.Elements;
 
@@ -38,6 +39,41 @@ namespace multiCRUD.View
             Console.WriteLine($"Imię\t{user._firstName}");
             Console.WriteLine($"Nazwisko\t{user._lastName}");
             Console.WriteLine($"E-mail\t{user._email}");
+        }
+
+        public void ShowAllDoneMessage()
+        {
+            Console.WriteLine("Pomyślnie dodano");
+        }
+
+        public void ShowErrors(List<ValidationFailure> validationFailures)
+        {
+            Console.WriteLine("\n");
+            Console.WriteLine(new String('-',15));
+            Console.WriteLine("WPROWADZONO NIEPRAWIDŁOWE WARTOŚCI!");
+            Console.WriteLine(new String('-', 15));
+            foreach (ValidationFailure failure in validationFailures)
+            {
+                Console.WriteLine(failure.ToString());
+            }
+        }
+
+        public void ShowElementExistsError(object value)
+        {
+            string type = String.Empty;
+            switch(value.ToString())
+            {
+                case "User":
+                    type = "Użytkownik";
+                    break;
+                case "Book":
+                    type = "Książka";
+                    break;
+                default:
+                    type = "Obiekt";
+                    break;
+            }
+            Console.WriteLine($"{type} już istnieje w repozytorium");
         }
     }
 }

@@ -13,7 +13,8 @@ namespace multiCRUD.Model
         private IElement _element;
         private SearchArguments _searchArguments;
         private readonly IViewer _viewer;
-        private int response;
+        private int _response;
+        private bool _doesItExists;
         public App(IMenu menu, IResponseProvider responseProvider, IViewer viewer)
         {
             _menu = menu;
@@ -24,8 +25,8 @@ namespace multiCRUD.Model
         public void Start()
         {
             _menu.ShowMainMenu();
-            response = _responseProvider.GetIntFromUser();
-            switch (response)
+            _response = _responseProvider.GetIntFromUser();
+            switch (_response)
             {
                 case 1:
                     _crud = new MongoCrud();
@@ -39,8 +40,8 @@ namespace multiCRUD.Model
                     break;
             }
             _menu.ChooseElementType();
-            response = _responseProvider.GetIntFromUser();
-            switch (response)
+            _response = _responseProvider.GetIntFromUser();
+            switch (_response)
             {
                 case 1:
                     _element = new Book();
@@ -53,12 +54,20 @@ namespace multiCRUD.Model
                     break;
             }
             _menu.AskWhatToDo();
-            response = _responseProvider.GetIntFromUser();
-            switch (response)
+            _response = _responseProvider.GetIntFromUser();
+            switch (_response)
             {
                 case 1:
                     _element = _responseProvider.GetElementFromUser(_element);
-                    _crud.Add(_element);
+                    _doesItExists = _crud.CheckIfExists(_element);
+                    if (_doesItExists)
+                    {
+                        _viewer.ShowElementExistsError(_element.GetType().Name);
+                    }
+                    else
+                    {
+                        if (_responseProvider.ShowOutputMessage(_element.Validate())) _crud.Add(_element);
+                    }
                     break;
                 case 2:
                     _searchArguments = _responseProvider.GetSearchArgumentsFromUser(_element);

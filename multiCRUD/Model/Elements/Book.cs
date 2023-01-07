@@ -1,5 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using FluentValidation.Results;
+using MongoDB.Bson.Serialization.Attributes;
 using multiCRUD.Interfaces;
+using multiCRUD.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,5 +32,13 @@ namespace multiCRUD.Model.Elements
             _genre = genre;
         }
         public Book() { }
+
+        public List<ValidationFailure>? Validate()
+        {
+            BookValidator validator = new();
+            ValidationResult result= validator.Validate(this);
+            if (result.IsValid) return null;
+            return result.Errors;
+        }
     }
 }

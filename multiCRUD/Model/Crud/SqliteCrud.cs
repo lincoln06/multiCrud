@@ -8,22 +8,25 @@ namespace multiCRUD.Model.Crud
 {
     public class SqliteCrud : ICrud
     {
-        private static SqliteConnection _connection = new("Data-Source=Service.db");
+        private static SqliteConnection _connection = new("Data Source=Data/Service.db");
         SqliteCommand _command=_connection.CreateCommand();
         public void Add(IElement element)
         {
-            _connection.Open();
-            if (element is Book)
+            using (_connection)
             {
-                Book book = element as Book;
-                AddABook(book);
+                _connection.Open();
+                if (element is Book)
+                {
+                    Book book = element as Book;
+                    AddABook(book);
+                }
+                if (element is User)
+                {
+                    User user = element as User;
+                    AddUser(user);
+                }
+                _connection.Close();
             }
-            if (element is User)
-            {
-                User user = element as User;
-                AddUser(user);
-            }
-            _connection.Close();
         }
 
         public void AddABook(Book book)
@@ -36,6 +39,39 @@ namespace multiCRUD.Model.Crud
         {
             _command.CommandText = @"insert into Users(FirstName,LastName,Email,Password) values('" + user._firstName + "','" + user._lastName + "','" + user._email + "','" + user._password + "')";
             _command.ExecuteNonQuery();
+        }
+
+        public bool CheckIfExists(IElement _element)
+        {
+            using (_connection)
+            {
+                _connection.Open();
+                if (_element is Book) return CheckIfBookExists(_element);
+                if (_element is User) return CheckIfUserExists(_element);
+                _connection.Close();
+            }
+            return false;
+        }
+
+        private bool CheckIfUserExists(IElement element)
+        {
+            User user=(User)element;
+            _command.CommandText = @"select * from Users where Email='" + user._email + "'";
+            var reader = _command.ExecuteReader();
+            reader.Read();
+            if (!reader.HasRows) return false;
+            return true;
+
+        }
+
+        private bool CheckIfBookExists(IElement element)
+        {
+            Book book = (Book)element;
+            _command.CommandText = @"select * from Books where AuthorLastName='" + book._authorLastName + "' and Title='" + book._title + "'";
+            var reader = _command.ExecuteReader();
+            reader.Read();
+            if (!reader.HasRows) return false;
+            return true;
         }
 
         public IElement? Find(IElement element, SearchArguments searchArguments)
@@ -66,7 +102,7 @@ namespace multiCRUD.Model.Crud
 
         public User? FindUser(SearchArguments searchArguments)
         {
-            _command.CommandText = @"select * from Users where Email='" + searchArguments._arg1 + "' and Password='" + searchArguments._arg2 + "'";
+            _command.CommandText = @"select * from Users where Email='" + searchArguments._arg1 + "' and Password='" + PasswordEncryptor.Encrypt(searchArguments._arg2,searchArguments._arg1) + "'";
             _command.ExecuteNonQuery();
             var reader = _command.ExecuteReader();
             reader.Read();

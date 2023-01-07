@@ -1,4 +1,5 @@
-﻿using multiCRUD.Interfaces;
+﻿using FluentValidation.Results;
+using multiCRUD.Interfaces;
 using multiCRUD.Model.Elements;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,11 @@ namespace multiCRUD.Model
     public class ResponseProvider : IResponseProvider
     {
         private readonly IMenu _menu;
-        public ResponseProvider(IMenu menu)
+        private readonly IViewer _viewer;
+        public ResponseProvider(IMenu menu, IViewer viewer)
         {
             _menu = menu;
+            _viewer= viewer;
         }
 
         public IElement GetElementFromUser(IElement element)
@@ -39,13 +42,8 @@ namespace multiCRUD.Model
             string email= Console.ReadLine();
             Console.WriteLine("Hasło");
             string password=Console.ReadLine();
-            return new User
-            {
-                _firstName = firstName,
-                _lastName = lastName,
-                _email = email,
-                _password = password
-            };
+            return new User(firstName,lastName,email, password);
+            
         }
 
         private Book GetBook()
@@ -60,14 +58,8 @@ namespace multiCRUD.Model
             ushort year = ushort.Parse(Console.ReadLine());
             Console.WriteLine("Gatunek");
             string genre = Console.ReadLine();
-            return new Book
-            {
-                _authorFirstName = firstName,
-                _authorLastName = lastName,
-                _title=title,
-                _year=year,
-                _genre=genre
-            };
+            return new Book(firstName, lastName, title, year, genre);
+            
         }
 
         public int GetIntFromUser()
@@ -99,6 +91,17 @@ namespace multiCRUD.Model
                 arg2 = Console.ReadLine();
             }
             return new SearchArguments(arg1, arg2);
+        }
+
+        public bool ShowOutputMessage(List<ValidationFailure>? validationFailures)
+        {
+            if (validationFailures is null)
+            {
+                _viewer.ShowAllDoneMessage();
+                return true;
+            }
+            _viewer.ShowErrors(validationFailures);
+            return false;
         }
     }
 }

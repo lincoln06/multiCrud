@@ -33,7 +33,48 @@ namespace multiCRUD.Model.Crud
 
         public void AddUser(User user)
         {
+
             _usersCollection.InsertOne(user);
+        }
+
+        public bool CheckIfExists(IElement _element)
+        {
+            if (_element is Book) return CheckIfBookExists(_element);
+            if (_element is User) return CheckIfUserExists(_element);
+            return false;
+        }
+
+        private bool CheckIfUserExists(IElement element)
+        {
+            User user = (User)element;
+            var filter = Builders<User>.Filter.Eq("Email", user._email);
+            try
+            {
+                var record = (User)_usersCollection.Find(filter).First();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool CheckIfBookExists(IElement element)
+        {
+            Book book = (Book)element;
+            var filter = Builders<Book>.Filter.And(
+                Builders<Book>.Filter.Eq("AuthorLastName", book._authorLastName),
+                Builders<Book>.Filter.Eq("Title", book._title));
+            try
+            {
+                var record = (Book)_booksCollection.Find(filter).First();
+
+                return true; ;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public IElement? Find(IElement element, SearchArguments searchArguments)
@@ -71,7 +112,7 @@ namespace multiCRUD.Model.Crud
         {
             var filter = Builders<User>.Filter.And(
                 Builders<User>.Filter.Eq("Email", searchArguments._arg1),
-                Builders<User>.Filter.Eq("Password", searchArguments._arg2));
+                Builders<User>.Filter.Eq("Password", PasswordEncryptor.Encrypt(searchArguments._arg2, searchArguments._arg1)));
             try
             {
                 var record = (User)_usersCollection.Find(filter).First();

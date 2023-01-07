@@ -11,5 +11,6 @@ namespace multiCrud
         User? FindUser(SearchArguments searchArguments);
         Book? FindBook(SearchArguments searchArguments);
         IElement? Find(IElement element, SearchArguments searchArguments);
+        bool CheckIfExists(IElement _element);
     }
 }
