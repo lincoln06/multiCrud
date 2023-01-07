@@ -33,7 +33,6 @@ namespace multiCRUD.Model.Crud
 
         public void AddUser(User user)
         {
-
             _usersCollection.InsertOne(user);
         }
 
@@ -116,8 +115,6 @@ namespace multiCRUD.Model.Crud
             try
             {
                 var record = _usersCollection.Find(filter).First();
-                Console.WriteLine(record._lastName);
-
                 return record;
             }
             catch

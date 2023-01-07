@@ -11,5 +11,6 @@ namespace multiCRUD.Interfaces
         void ShowAllDoneMessage();
         void ShowErrors(List<ValidationFailure> validationFailures);
         void ShowElementExistsError(object value);
+        void ShowNotFoundError();
     }
 }

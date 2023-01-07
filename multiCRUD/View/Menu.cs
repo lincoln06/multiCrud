@@ -37,12 +37,6 @@ namespace multiCRUD.View
             Console.WriteLine("1\tMongoDB");
             Console.WriteLine("2\tSQLite");
         }
-
-        public void ShowNotFoundError()
-        {
-            Console.WriteLine("Nie znaleziono");
-        }
-
         public void ShowUserArgRequest(int option)
         {
             switch(option)

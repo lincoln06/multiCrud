@@ -70,5 +70,10 @@ namespace multiCRUD.View
             }
             Console.WriteLine($"{type} już istnieje w repozytorium");
         }
+
+        public void ShowNotFoundError()
+        {
+            Console.WriteLine("Nie znaleziono");
+        }
     }
 }

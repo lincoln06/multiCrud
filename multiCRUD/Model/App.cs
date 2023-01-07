@@ -30,7 +30,6 @@ namespace multiCRUD.Model
             {
                 case 1:
                     _crud = new MongoCrud();
-                    Console.WriteLine("Mongo");
                     break;
                 case 2:
                     _crud = new SqliteCrud();
@@ -72,7 +71,7 @@ namespace multiCRUD.Model
                 case 2:
                     _searchArguments = _responseProvider.GetSearchArgumentsFromUser(_element);
                     _element = _crud.Find(_element, _searchArguments);
-                    if (!_viewer.ShowElement(_element)) _menu.ShowNotFoundError(); ;
+                    if (!_viewer.ShowElement(_element)) _viewer.ShowNotFoundError();
                     break;
             }
         }

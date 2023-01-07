@@ -9,15 +9,15 @@ namespace multiCRUD.Model.Elements
     public class Book:IElement
     {
         [BsonElement("AuthorFirstName")]
-        public string _authorFirstName { get; set; }
+        public string _authorFirstName { get;}
         [BsonElement("AuthorLastName")]
-        public string _authorLastName { get; set; }
+        public string _authorLastName { get;}
         [BsonElement("Title")]
-        public string _title { get; set; }
+        public string _title { get; }
         [BsonElement("Year")]
-        public ushort _year { get; set; }
+        public ushort _year { get; }
         [BsonElement("Genre")]
-        public string _genre { get; set; }
+        public string _genre { get; }
         public Book(string authorFirstName, string authorLastName, string title, ushort year, string genre)
         {
             _authorFirstName = authorFirstName;
