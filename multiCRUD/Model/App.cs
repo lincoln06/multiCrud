@@ -14,7 +14,7 @@ namespace multiCRUD.Model
         private SearchArguments _searchArguments;
         private readonly IViewer _viewer;
         private int _response;
-        private bool _doesItExists;
+        private bool _occursInDatabase;
         public App(IMenu menu, IResponseProvider responseProvider, IViewer viewer)
         {
             _menu = menu;
@@ -58,19 +58,19 @@ namespace multiCRUD.Model
             {
                 case 1:
                     _element = _responseProvider.GetElementFromUser(_element);
-                    _doesItExists = _crud.CheckIfExists(_element);
-                    if (_doesItExists)
+                    _occursInDatabase = _crud.CheckIfOccursInDatabase(_element);
+                    if (_occursInDatabase)
                     {
-                        _viewer.ShowElementExistsError(_element.GetType().Name);
+                        _viewer.ShowElementOccursError(_element.GetType().Name);
                     }
                     else
                     {
-                        if (_responseProvider.ShowOutputMessage(_element.Validate())) _crud.Add(_element);
+                        if (_responseProvider.ShowOutputMessage(_element.Validate())) _crud.AddToDB(_element);
                     }
                     break;
                 case 2:
                     _searchArguments = _responseProvider.GetSearchArgumentsFromUser(_element);
-                    _element = _crud.Find(_element, _searchArguments);
+                    _element = _crud.FindElementInDB(_element, _searchArguments);
                     if (!_viewer.ShowElement(_element)) _viewer.ShowNotFoundError();
                     break;
             }

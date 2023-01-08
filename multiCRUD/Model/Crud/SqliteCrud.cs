@@ -9,7 +9,7 @@ namespace multiCRUD.Model.Crud
     {
         private static SqliteConnection _connection = new("Data Source=Data/Service.db");
         SqliteCommand _command=_connection.CreateCommand();
-        public void Add(IElement element)
+        public void AddToDB(IElement element)
         {
             using (_connection)
             {
@@ -17,42 +17,42 @@ namespace multiCRUD.Model.Crud
                 if (element is Book)
                 {
                     Book book = element as Book;
-                    AddABook(book);
+                    AddABookToDB(book);
                 }
                 if (element is User)
                 {
                     User user = element as User;
-                    AddUser(user);
+                    AddUserToDB(user);
                 }
                 _connection.Close();
             }
         }
 
-        public void AddABook(Book book)
+        public void AddABookToDB(Book book)
         {
             _command.CommandText = @"insert into Books(AuthorFirstName,AuthorLastName,Title,Year,Genre) values('" + book._authorFirstName + "','" + book._authorLastName + "','" + book._title + "','" + book._year + "','"+book._genre+"')";
             _command.ExecuteNonQuery();
         }
 
-        public void AddUser(User user)
+        public void AddUserToDB(User user)
         {
             _command.CommandText = @"insert into Users(FirstName,LastName,Email,Password) values('" + user._firstName + "','" + user._lastName + "','" + user._email + "','" + user._password + "')";
             _command.ExecuteNonQuery();
         }
 
-        public bool CheckIfExists(IElement _element)
+        public bool CheckIfOccursInDatabase(IElement _element)
         {
             using (_connection)
             {
                 _connection.Open();
-                if (_element is Book) return CheckIfBookExists(_element);
-                if (_element is User) return CheckIfUserExists(_element);
+                if (_element is Book) return CheckIfBookOccursInDB(_element);
+                if (_element is User) return CheckIfUserOccursInDB(_element);
                 _connection.Close();
             }
             return false;
         }
 
-        private bool CheckIfUserExists(IElement element)
+        private bool CheckIfUserOccursInDB(IElement element)
         {
             User user=(User)element;
             _command.CommandText = @"select * from Users where Email='" + user._email + "'";
@@ -63,7 +63,7 @@ namespace multiCRUD.Model.Crud
 
         }
 
-        private bool CheckIfBookExists(IElement element)
+        private bool CheckIfBookOccursInDB(IElement element)
         {
             Book book = (Book)element;
             _command.CommandText = @"select * from Books where AuthorLastName='" + book._authorLastName + "' and Title='" + book._title + "'";
@@ -73,23 +73,23 @@ namespace multiCRUD.Model.Crud
             return true;
         }
 
-        public IElement? Find(IElement element, SearchArguments searchArguments)
+        public IElement? FindElementInDB(IElement element, SearchArguments searchArguments)
         {
             _connection.Open();
             if(element is Book)
             {
-                element = FindBook(searchArguments);
+                element = FindBookInDB(searchArguments);
             }
             if(element is User)
             {
-                element = FindUser(searchArguments);
+                element = FindUserInDB(searchArguments);
             }
             _connection.Close();
             return element;
         
         }
 
-        public Book? FindBook(SearchArguments searchArguments)
+        public Book? FindBookInDB(SearchArguments searchArguments)
         {
             _command.CommandText = @"select * from Books where AuthorLastName='" + searchArguments._arg1 + "' and Title='" + searchArguments._arg2 + "'";
             _command.ExecuteNonQuery();
@@ -99,7 +99,7 @@ namespace multiCRUD.Model.Crud
             return new Book(reader.GetString(0), reader.GetString(1), reader.GetString(2), ushort.Parse(reader.GetString(3)), reader.GetString(4));
         }
 
-        public User? FindUser(SearchArguments searchArguments)
+        public User? FindUserInDB(SearchArguments searchArguments)
         {
             _command.CommandText = @"select * from Users where Email='" + searchArguments._arg1 + "' and Password='" + PasswordEncryptor.Encrypt(searchArguments._arg2,searchArguments._arg1) + "'";
             _command.ExecuteNonQuery();

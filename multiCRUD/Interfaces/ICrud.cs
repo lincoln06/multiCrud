@@ -5,12 +5,12 @@ namespace multiCrud
 {
     public interface ICrud
     {
-        void Add(IElement element);
-        void AddABook(Book book);
-        void AddUser(User user);
-        User? FindUser(SearchArguments searchArguments);
-        Book? FindBook(SearchArguments searchArguments);
-        IElement? Find(IElement element, SearchArguments searchArguments);
-        bool CheckIfExists(IElement _element);
+        void AddToDB(IElement element);
+        void AddABookToDB(Book book);
+        void AddUserToDB(User user);
+        User? FindUserInDB(SearchArguments searchArguments);
+        Book? FindBookInDB(SearchArguments searchArguments);
+        IElement? FindElementInDB(IElement element, SearchArguments searchArguments);
+        bool CheckIfOccursInDatabase(IElement _element);
     }
 }

@@ -10,7 +10,7 @@ namespace multiCRUD.Interfaces
         void ShowBook(Book book);
         void ShowAllDoneMessage();
         void ShowErrors(List<ValidationFailure> validationFailures);
-        void ShowElementExistsError(object value);
+        void ShowElementOccursError(object value);
         void ShowNotFoundError();
     }
 }

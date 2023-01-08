@@ -27,6 +27,7 @@ namespace multiCRUD.View
             Console.WriteLine($"Tytuł:\t{book._title}");
             Console.WriteLine($"Gatunek:\t{book._genre}");
             Console.WriteLine($"Rok wydania:\t{book._year}");
+            Console.ReadKey();
 
         }
         public void ShowUser(User user)
@@ -34,26 +35,29 @@ namespace multiCRUD.View
             Console.WriteLine($"Imię\t{user._firstName}");
             Console.WriteLine($"Nazwisko\t{user._lastName}");
             Console.WriteLine($"E-mail\t{user._email}");
+            Console.ReadKey();
         }
 
         public void ShowAllDoneMessage()
         {
             Console.WriteLine("Pomyślnie dodano");
+            Console.ReadKey();
         }
 
         public void ShowErrors(List<ValidationFailure> validationFailures)
         {
             Console.WriteLine("\n");
-            Console.WriteLine(new String('-',15));
+            Console.WriteLine(new String('-',35));
             Console.WriteLine("WPROWADZONO NIEPRAWIDŁOWE WARTOŚCI!");
-            Console.WriteLine(new String('-', 15));
+            Console.WriteLine(new String('-', 35));
             foreach (ValidationFailure failure in validationFailures)
             {
                 Console.WriteLine(failure.ToString());
             }
+            Console.ReadKey();
         }
 
-        public void ShowElementExistsError(object value)
+        public void ShowElementOccursError(object value)
         {
             string type = String.Empty;
             switch(value.ToString())
@@ -69,11 +73,13 @@ namespace multiCRUD.View
                     break;
             }
             Console.WriteLine($"{type} już istnieje w repozytorium");
+            Console.ReadKey();
         }
 
         public void ShowNotFoundError()
         {
             Console.WriteLine("Nie znaleziono");
+            Console.ReadKey();
         }
     }
 }

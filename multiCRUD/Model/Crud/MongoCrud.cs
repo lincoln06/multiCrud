@@ -12,38 +12,38 @@ namespace multiCRUD.Model.Crud
         private readonly static IMongoDatabase _database = _client.GetDatabase(_databaseName);
         private readonly IMongoCollection<User> _usersCollection = _database.GetCollection<User>(_usersTableName);
         private readonly IMongoCollection<Book> _booksCollection=_database.GetCollection<Book>(_booksTableName);
-        public void Add(IElement element)
+        public void AddToDB(IElement element)
         {
             if(element is Book)
             {
                 Book book= (Book)element;
-                AddABook(book);
+                AddABookToDB(book);
             }
             if(element is User)
             {
                 User user= (User)element;
-                AddUser(user);
+                AddUserToDB(user);
             }
         }
 
-        public void AddABook(Book book)
+        public void AddABookToDB(Book book)
         {
             _booksCollection.InsertOne(book);
         }
 
-        public void AddUser(User user)
+        public void AddUserToDB(User user)
         {
             _usersCollection.InsertOne(user);
         }
 
-        public bool CheckIfExists(IElement _element)
+        public bool CheckIfOccursInDatabase(IElement _element)
         {
-            if (_element is Book) return CheckIfBookExists(_element);
-            if (_element is User) return CheckIfUserExists(_element);
+            if (_element is Book) return CheckIfBookOccursInDB(_element);
+            if (_element is User) return CheckIfUserOccursInDB(_element);
             return false;
         }
 
-        private bool CheckIfUserExists(IElement element)
+        private bool CheckIfUserOccursInDB(IElement element)
         {
             User user = (User)element;
             var filter = Builders<User>.Filter.Eq("Email", user._email);
@@ -58,7 +58,7 @@ namespace multiCRUD.Model.Crud
             }
         }
 
-        private bool CheckIfBookExists(IElement element)
+        private bool CheckIfBookOccursInDB(IElement element)
         {
             Book book = (Book)element;
             var filter = Builders<Book>.Filter.And(
@@ -76,21 +76,21 @@ namespace multiCRUD.Model.Crud
             }
         }
 
-        public IElement? Find(IElement element, SearchArguments searchArguments)
+        public IElement? FindElementInDB(IElement element, SearchArguments searchArguments)
         {
             if (element is Book)
             {
-                element = FindBook(searchArguments);
+                element = FindBookInDB(searchArguments);
             }
             if (element is User)
             {
-                element = FindUser(searchArguments);
+                element = FindUserInDB(searchArguments);
             }
             return element;
             
         }
 
-        public Book? FindBook(SearchArguments searchArguments)
+        public Book? FindBookInDB(SearchArguments searchArguments)
         {
             var filter = Builders<Book>.Filter.And(
                 Builders<Book>.Filter.Eq("AuthorLastName", searchArguments._arg1),
@@ -107,7 +107,7 @@ namespace multiCRUD.Model.Crud
             }
         }
 
-        public User? FindUser(SearchArguments searchArguments)
+        public User? FindUserInDB(SearchArguments searchArguments)
         {
             var filter = Builders<User>.Filter.And(
                 Builders<User>.Filter.Eq("Email", searchArguments._arg1),
